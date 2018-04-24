@@ -72,11 +72,11 @@ class Game(object):
         self.root = root
         self.canvas = canvas
         self.root.bind("<KeyPress>", self.on_press)
-        self.snake = Snake(canvas)
         self.food = Food(canvas)
+        self.snake = Snake(canvas)
+        self.root.update()
 
     def advance(self):
-        self.root.update()
         self.snake.move_head()
         if (self.snake.headx == self.food.x) and (self.snake.heady == self.food.y):
             print("food get!")
@@ -84,6 +84,7 @@ class Game(object):
             self.food.respawn()
         else:
             self.snake.move_body()
+        self.root.update()
         self.root.after(DELAY, self.advance)
 
     def on_press(self, event):
@@ -101,6 +102,6 @@ if __name__ == "__main__":
     root = Tk()
     canvas = Canvas(root, bg="black",height=HEIGHT, width=WIDTH)
     game = Game(root)
-    game.advance()
+    root.after(DELAY, game.advance)
     canvas.pack()
     root.mainloop()
